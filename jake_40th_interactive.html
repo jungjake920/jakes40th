@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Jake's 40th – Save the Date(s)</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Dancing+Script:wght@600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0a1a0a;
+    margin: 0;
+    padding: 0;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .poster {
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto;
+    background: #0f1f0f;
+    border-left: 2px solid #c9a84c;
+    border-right: 2px solid #c9a84c;
+    border-bottom: 2px solid #c9a84c;
+  }
+
+  .top-rule, .bottom-rule {
+    height: 5px;
+    background: linear-gradient(90deg, #7a5010, #c9a84c, #e8c97a, #c9a84c, #7a5010);
+  }
+
+  .header {
+    text-align: center;
+    padding: 28px 20px 14px;
+  }
+
+  .save-label {
+    font-size: 9px;
+    letter-spacing: 5px;
+    color: #c9a84c;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .big-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 8vw, 56px);
+    line-height: 0.9;
+    color: #f0ead8;
+    letter-spacing: 3px;
+  }
+  .big-title span { color: #c9a84c; }
+
+  .tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(10px, 2.5vw, 13px);
+    color: #fff;
+    margin-top: 12px;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 20px;
+    margin: 14px 0;
+  }
+  .divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, #c9a84c66, transparent); }
+  .divider-diamond { width: 5px; height: 5px; background: #c9a84c; transform: rotate(45deg); flex-shrink: 0; }
+
+  /* CALENDAR GRID */
+  .calendar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    margin: 0 3px;
+  }
+
+  .cal-card {
+    background: #162216;
+    border: 1px solid #1e3a1e;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .cal-card:hover { border-color: #c9a84c66; }
+
+  .cal-tab {
+    background: #c9a84c;
+    padding: 8px 12px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .cal-day-abbr {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 3px;
+    color: #1a0e00;
+    line-height: 1;
+  }
+  .cal-date-num {
+    font-size: 10px;
+    font-weight: 500;
+    color: #1a0e00;
+    opacity: 0.6;
+    letter-spacing: 1px;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+
+  .cal-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 8px 20px;
+    text-align: center;
+    position: relative;
+  }
+  .cal-event {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(14px, 3.5vw, 20px);
+    font-weight: 700;
+    color: #e8dfc8;
+    line-height: 1.15;
+  }
+  .tap-hint {
+    position: absolute;
+    bottom: 6px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #c9a84c;
+    opacity: 0.5;
+  }
+
+  /* MODAL OVERLAY */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .modal-overlay.active {
+    display: flex;
+  }
+
+  .modal-box {
+    background: #0f1f0f;
+    border: 2px solid #c9a84c;
+    width: 100%;
+    max-width: 400px;
+    padding: 24px 22px 20px;
+    position: relative;
+    animation: modalIn 0.3s ease;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.92) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 12px; right: 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: #c9a84c;
+    cursor: pointer;
+    letter-spacing: 1px;
+    opacity: 0.7;
+  }
+  .modal-close:hover { opacity: 1; }
+
+  .modal-day {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #c9a84c;
+    margin-bottom: 4px;
+  }
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #f0ead8;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .modal-detail {
+    font-size: 14px;
+    color: #aacaaa;
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+  .modal-detail strong { color: #c9a84c; }
+
+  .ticket-note {
+    font-family: 'Dancing Script', cursive;
+    font-size: 14px;
+    color: #c9a84c;
+    padding: 6px 10px;
+    border: 1px dashed #c9a84c55;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .rsvp-btn {
+    display: block;
+    background: #c9a84c;
+    color: #0f1f0f;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 3px;
+    text-align: center;
+    padding: 12px 12px 10px;
+    text-decoration: none;
+    width: 100%;
+    transition: background 0.2s;
+  }
+  .rsvp-btn:hover { background: #e8c97a; }
+
+  /* footer */
+  .footer { padding: 20px 20px 24px; text-align: center; }
+  .footer-date {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 4px;
+    color: #c9a84c;
+    margin-bottom: 8px;
+  }
+  .details-note {
+    font-size: 9px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: #2a4a2a;
+  }
+  input::placeholder { color: #4a6a4a; }
+  input:focus { border-color: #c9a84c !important; }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="top-rule"></div>
+
+  <div class="header">
+    <p class="save-label">Save the Date(s)</p>
+    <div class="big-title">Jake's Turning <span>40</span></div>
+    <p class="tagline">so let's act young for a week before he's old forever.</p>
+  </div>
+
+  <div class="divider">
+    <div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div>
+  </div>
+
+  <div class="calendar">
+
+    <!-- THU — The Boot -->
+    <div class="cal-card" onclick="openModal('thu')">
+      <div class="cal-tab">
+        <span class="cal-day-abbr">Thu</span>
+        <span class="cal-date-num">Sept 10</span>
+      </div>
+      <div class="cal-body">
+        <svg style="position:absolute;top:8px;left:8px;opacity:0.4;transform:rotate(-10deg);transform-origin:top left;" width="30" height="30" viewBox="0 0 36 36" fill="none">
+          <path d="M10 8 L13 30 L23 30 L26 8 Z" fill="none" stroke="#c9a84c" stroke-width="1.2" stroke-linejoin="round"/>
+          <ellipse cx="18" cy="8" rx="8" ry="2.5" fill="#c9a84c" opacity="0.7"/>
+          <path d="M11 15 L13 30 L23 30 L25 15 Z" fill="#c9a84c" opacity="0.12"/>
+          <circle cx="16" cy="22" r="0.8" fill="#c9a84c" opacity="0.5"/>
+          <circle cx="19" cy="18" r="0.7" fill="#c9a84c" opacity="0.4"/>
+        </svg>
+        <div class="cal-event">The Boot Room</div>
+        <div class="tap-hint">tap for details</div>
+      </div>
+    </div>
+
+    <!-- FRI — Bar Crawl -->
+    <div class="cal-card" onclick="openModal('fri')">
+      <div class="cal-tab">
+        <span class="cal-day-abbr">Fri</span>
+        <span class="cal-date-num">Sept 11</span>
+      </div>
+      <div class="cal-body">
+        <svg style="position:absolute;top:6px;right:6px;opacity:0.4;transform:rotate(10deg);transform-origin:top right;" width="36" height="28" viewBox="0 0 44 36" fill="none">
+          <path d="M3 8 L5.5 28 L12.5 28 L15 8 Z" fill="none" stroke="#c9a84c" stroke-width="1.1" stroke-linejoin="round"/>
+          <ellipse cx="9" cy="8" rx="6" ry="2" fill="#c9a84c" opacity="0.7"/>
+          <path d="M14 9 L16 27 L22 27 L24 9 Z" fill="none" stroke="#c9a84c" stroke-width="1.1" stroke-linejoin="round"/>
+          <ellipse cx="19" cy="9" rx="5" ry="1.8" fill="#c9a84c" opacity="0.7"/>
+          <path d="M25 8 L27 28 L34 28 L36 8 Z" fill="none" stroke="#c9a84c" stroke-width="1.1" stroke-linejoin="round"/>
+          <ellipse cx="30.5" cy="8" rx="5.5" ry="2" fill="#c9a84c" opacity="0.7"/>
+        </svg>
+        <div class="cal-event">A Bar Crawl</div>
+        <div class="tap-hint">tap for details</div>
+      </div>
+    </div>
+
+    <!-- SAT — Bulls Game -->
+    <div class="cal-card" onclick="openModal('sat')">
+      <div class="cal-tab">
+        <span class="cal-day-abbr">Sat</span>
+        <span class="cal-date-num">Sept 12</span>
+      </div>
+      <div class="cal-body">
+        <svg style="position:absolute;top:8px;left:8px;opacity:0.4;transform:rotate(-10deg);transform-origin:top left;" width="30" height="30" viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="18" r="11" fill="none" stroke="#c9a84c" stroke-width="1.2"/>
+          <path d="M11 13 Q14 17 11 21" fill="none" stroke="#c9a84c" stroke-width="1" stroke-linecap="round"/>
+          <path d="M25 13 Q22 17 25 21" fill="none" stroke="#c9a84c" stroke-width="1" stroke-linecap="round"/>
+          <line x1="11.5" y1="14.5" x2="13.5" y2="15.2" stroke="#c9a84c" stroke-width="0.7"/>
+          <line x1="11.5" y1="17.5" x2="13.5" y2="17.5" stroke="#c9a84c" stroke-width="0.7"/>
+          <line x1="24.5" y1="14.5" x2="22.5" y2="15.2" stroke="#c9a84c" stroke-width="0.7"/>
+          <line x1="24.5" y1="17.5" x2="22.5" y2="17.5" stroke="#c9a84c" stroke-width="0.7"/>
+        </svg>
+        <div style="position:relative;display:inline-block;">
+          <div class="cal-event">A Game</div>
+          <span style="font-family:'Dancing Script',cursive;font-size:12px;color:#c9a84c;opacity:0.85;white-space:nowrap;position:absolute;top:100%;left:55%;transform:rotate(6deg);transform-origin:left top;margin-top:2px;">+ Surf Club</span>
+        </div>
+        <div class="tap-hint">tap for details</div>
+      </div>
+    </div>
+
+    <!-- WED — The Fruit -->
+    <div class="cal-card" onclick="openModal('wed')" style="background:#1a0a00;border-color:#8b2500;">
+      <div class="cal-tab" style="background:linear-gradient(135deg,#c0392b,#e67e22,#f1c40f);">
+        <span class="cal-day-abbr" style="color:#1a0a00;">Wed</span>
+        <span class="cal-date-num" style="color:#1a0a00;">Sept 16</span>
+      </div>
+      <div class="cal-body">
+        <svg style="position:absolute;top:8px;right:8px;opacity:0.5;transform:rotate(10deg);transform-origin:top right;" width="30" height="30" viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="21" r="11" fill="none" stroke="#e67e22" stroke-width="1.2"/>
+          <circle cx="18" cy="21" r="6" fill="none" stroke="#e67e22" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="18" cy="21" r="2" fill="#e67e22"/>
+          <circle cx="18" cy="21" r="0.8" fill="#1a0a00"/>
+          <line x1="26" y1="11" x2="21" y2="18" stroke="#e67e22" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="26" cy="10" r="1.5" fill="#e67e22"/>
+          <path d="M10 14 Q10 7 18 7 Q26 7 26 14" fill="none" stroke="#e67e22" stroke-width="1.2" stroke-linecap="round"/>
+          <rect x="8" y="13" width="3" height="5" rx="1" fill="#e67e22"/>
+          <rect x="25" y="13" width="3" height="5" rx="1" fill="#e67e22"/>
+        </svg>
+        <div class="cal-event" style="color:#f5e0c0;">And Some Fruit</div>
+        <div class="tap-hint" style="color:#e67e22;">tap for details</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="divider" style="margin-top:18px;">
+    <div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-date">September 9 – 16 · 2026  Durham, NC</div>
+    <p class="details-note">Details to follow</p>
+  </div>
+
+  <div class="bottom-rule"></div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-wed" onclick="closeModal('wed')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-close" onclick="closeModal('wed')">✕ CLOSE</div>
+    <div class="modal-day">Wednesday · Sept 16</div>
+    <div class="modal-title">The Fruit, Durham</div>
+    <div class="modal-detail">
+      It's been awhile since I've seen a show on a Wednesday, but a little Norwegian house music should do the trick. <a href="https://discopresents.com/event/2026-0916-durham-thefruit" target="_blank" style="color:#c9a84c;">Details here.</a> Doors at 9PM, 18+.<br/><br/>
+      <strong>Tickets are on Jake</strong> — just RSVP and he'll sort you out.<br/><br/>
+    </div>
+    <div class="ticket-note">🎟 Jake's got your ticket</div>
+    <form action="https://formspree.io/f/xaqazwrn" method="POST" style="margin-top:10px;">
+          <input type="hidden" name="night" value="Wednesday, Sept 16 — The Fruit"/>
+          <input type="text" name="name" placeholder="Your name" required style="width:100%;padding:9px 10px;margin-bottom:8px;background:#0a1a0a;border:1px solid #2a4a2a;color:#f0ead8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"/>
+          <input type="email" name="email" placeholder="Email address" required style="width:100%;padding:9px 10px;margin-bottom:8px;background:#0a1a0a;border:1px solid #2a4a2a;color:#f0ead8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"/>
+          <input type="tel" name="phone" placeholder="Phone number" style="width:100%;padding:9px 10px;margin-bottom:10px;background:#0a1a0a;border:1px solid #2a4a2a;color:#f0ead8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"/>
+          <button type="submit" class="rsvp-btn">I'M IN FOR THIS NIGHT</button>
+        </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-thu" onclick="closeModal('thu')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-close" onclick="closeModal('thu')">✕ CLOSE</div>
+    <div class="modal-day">Thursday · Sept 10</div>
+    <div class="modal-title">The Boot Room</div>
+    <div class="modal-detail">
+      Come join Jake at his favorite Thursday night DRM tradition: beers at The Boot Room with friends.
+    </div>
+    <form action="https://formspree.io/f/xaqazwrn" method="POST" style="margin-top:10px;">
+          <input type="hidden" name="night" value="Thursday, Sept 10 — The Boot Room"/>
+          <input type="text" name="name" placeholder="Your name" required style="width:100%;padding:9px 10px;margin-bottom:8px;background:#0a1a0a;border:1px solid #2a4a2a;color:#f0ead8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"/>
+          <input type="email" name="email" placeholder="Email address" required style="width:100%;padding:9px 10px;margin-bottom:8px;background:#0a1a0a;border:1px solid #2a4a2a;color:#f0ead8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"/>
+          <input type="tel" name="phone" placeholder="Phone number" style="width:100%;padding:9px 10px;margin-bottom:10px;background:#0a1a0a;border:1px solid #2a4a2a;color:#f0ead8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"/>
+          <button type="submit" class="rsvp-btn">I'M IN FOR THIS NIGHT</button>
+        </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-fri" onclick="closeModal('fri')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-close" onclick="closeModal('fri')">✕ CLOSE</div>
+    <div class="modal-day">Friday · Sept 11</div>
+    <div class="modal-title">Durham Bar Crawl</div>
+    <div class="modal-detail">
+      Let's start at Bull McCabe's and see where the night takes us.
+    </div>
+    <form action="https://formspree.io/f/xaqazwrn" method="POST" style="margin-top:10px;">
+          <input type="hidden" name="night" value="Friday, Sept 11 — Bar Crawl"/>
+          <input type="text" name="name" placeholder="Your name" required style="width:100%;padding:9px 10px;margin-bottom:8px;background:#0a1a0a;border:1px solid #2a4a2a;color:#f0ead8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"/>
+          <input type="email" name="email" placeholder="Email address" required style="width:100%;padding:9px 10px;margin-bottom:8px;background:#0a1a0a;border:1px solid #2a4a2a;color:#f0ead8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"/>
+          <input type="tel" name="phone" placeholder="Phone number" style="width:100%;padding:9px 10px;margin-bottom:10px;background:#0a1a0a;border:1px solid #2a4a2a;color:#f0ead8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"/>
+          <button type="submit" class="rsvp-btn">I'M IN FOR THIS NIGHT</button>
+        </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-sat" onclick="closeModal('sat')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-close" onclick="closeModal('sat')">✕ CLOSE</div>
+    <div class="modal-day">Saturday · Sept 12</div>
+    <div class="modal-title">Durham Bulls + Surf Club</div>
+    <div class="modal-detail">
+      In-shell peanuts, cold beers, baseball, and <strong>post-game fireworks</strong>. Then Surf Club after if you've still got it. 🌊<br/><br/>
+      <strong>Tickets are on Jake</strong> — just RSVP below.
+    </div>
+    <div class="ticket-note">🎟 Jake's got your ticket</div>
+    <form action="https://formspree.io/f/xaqazwrn" method="POST" style="margin-top:10px;">
+          <input type="hidden" name="night" value="Saturday, Sept 12 — Bulls Game + Surf Club"/>
+          <input type="text" name="name" placeholder="Your name" required style="width:100%;padding:9px 10px;margin-bottom:8px;background:#0a1a0a;border:1px solid #2a4a2a;color:#f0ead8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"/>
+          <input type="email" name="email" placeholder="Email address" required style="width:100%;padding:9px 10px;margin-bottom:8px;background:#0a1a0a;border:1px solid #2a4a2a;color:#f0ead8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"/>
+          <input type="tel" name="phone" placeholder="Phone number" style="width:100%;padding:9px 10px;margin-bottom:10px;background:#0a1a0a;border:1px solid #2a4a2a;color:#f0ead8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"/>
+          <button type="submit" class="rsvp-btn">I'M IN FOR THIS NIGHT</button>
+        </form>
+  </div>
+</div>
+
+<script>
+  function openModal(id) {
+    document.getElementById('modal-' + id).classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById('modal-' + id).classList.remove('active');
+    document.body.style.overflow = '';
+  }
+</script>
+</body>
+</html>
