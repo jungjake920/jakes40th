@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Before We Talk Politics: What Actually Matters to You?</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bg:#0c0f0a;--bg2:#111408;--bg3:#161a0e;
+  --border:#252d16;--border2:#303d1e;
+  --gold:#8fad5a;--gold2:#a8c46e;
+  --text:#e2e8d4;--text2:#9aaa7e;--text3:#5a6b42;--text4:#3d4a2a;
+  --green:#166534;--amber:#92400e;--red:#7f1d1d;
+  --dem:#1a4fd6;--rep:#c0392b;--dsa:#8B0000;--grn:#2d7a3a;--lib:#b8860b;--con:#5a3e8c;
+}
+
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+
+.screen{display:none;min-height:100vh;padding:40px 20px 80px}
+.screen.active{display:block}
+
+/* WELCOME */
+.welcome{max-width:680px;margin:0 auto;text-align:center;padding-top:60px}
+.welcome-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--text3);text-transform:uppercase;margin-bottom:20px}
+.welcome h1{font-family:'Playfair Display',serif;font-size:clamp(24px,5vw,42px);font-weight:400;color:var(--text);line-height:1.2;margin-bottom:8px}
+.welcome h1 em{font-style:italic;color:var(--gold)}
+.welcome-sub{font-family:'Playfair Display',serif;font-size:15px;color:var(--text3);font-style:italic;margin-bottom:36px;line-height:1.8}
+.welcome-body{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:28px 32px;text-align:left;margin-bottom:32px}
+.welcome-body p{font-size:14px;color:var(--text2);line-height:1.9;margin-bottom:14px}
+.welcome-body p:last-child{margin-bottom:0}
+.welcome-body p strong{color:var(--text)}
+.welcome-stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
+.stat-pill{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:7px 16px;font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.btn-primary{display:inline-block;background:var(--gold);color:#0c0f0a;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:14px 36px;border-radius:8px;border:none;cursor:pointer;letter-spacing:0.5px;transition:all 0.2s}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn-secondary{display:inline-block;background:transparent;color:var(--text3);font-family:'Inter',sans-serif;font-size:13px;padding:10px 20px;border-radius:8px;border:1px solid var(--border2);cursor:pointer;transition:all 0.2s;margin-left:10px}
+.btn-secondary:hover{color:var(--text2)}
+
+/* PROGRESS */
+.progress-wrap{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:12px 20px}
+.progress-inner{max-width:700px;margin:0 auto}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.progress-section{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+.progress-count{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text4)}
+.progress-bar-bg{height:3px;background:var(--border);border-radius:2px}
+.progress-bar-fill{height:3px;background:var(--gold);border-radius:2px;transition:width 0.4s ease}
+
+/* QUESTION */
+.q-wrap{max-width:680px;margin:0 auto;padding-top:80px}
+.q-section-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--text3);text-transform:uppercase;margin-bottom:16px}
+.q-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:32px;margin-bottom:20px}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text4);letter-spacing:2px;margin-bottom:10px}
+.q-text{font-family:'Playfair Display',serif;font-size:clamp(15px,2.8vw,19px);color:var(--text);line-height:1.55;margin-bottom:8px;font-weight:400}
+.q-context{font-size:12px;color:var(--text3);font-style:italic;margin-bottom:22px;line-height:1.7;display:none}
+.q-context.show{display:block}
+
+/* LIKERT */
+.likert-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--text4);font-family:'JetBrains Mono',monospace;margin-bottom:6px;padding:0 2px}
+.likert-options{display:flex;gap:6px}
+.likert-btn{flex:1;padding:11px 4px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text3);font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;text-align:center;transition:all 0.15s;line-height:1.3}
+.likert-btn:hover{border-color:var(--border2);color:var(--text2)}
+.likert-btn.selected{background:var(--gold);border-color:var(--gold);color:#0c0f0a;font-weight:600}
+.likert-btn .val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;display:block;margin-bottom:2px}
+
+/* MC */
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-btn{padding:12px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text2);font-size:13px;cursor:pointer;text-align:left;transition:all 0.15s;font-family:'Inter',sans-serif}
+.mc-btn:hover{border-color:var(--border2);color:var(--text)}
+.mc-btn.selected{background:var(--gold);border-color:var(--gold);color:#0c0f0a;font-weight:600}
+
+/* NAV */
+.q-nav{display:flex;gap:12px;justify-content:space-between;align-items:center}
+.btn-back{background:none;border:1px solid var(--border);color:var(--text3);font-size:13px;padding:10px 20px;border-radius:8px;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s}
+.btn-back:hover{border-color:var(--border2);color:var(--text2)}
+.btn-next{background:var(--gold);border:none;color:#0c0f0a;font-size:13px;font-weight:600;padding:12px 28px;border-radius:8px;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;opacity:0.35;pointer-events:none}
+.btn-next.enabled{opacity:1;pointer-events:all}
+.btn-next.enabled:hover{background:var(--gold2)}
+
+/* RESULTS */
+.results-wrap{max-width:820px;margin:0 auto;padding-top:40px}
+.results-hero{text-align:center;margin-bottom:44px}
+.results-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--text3);text-transform:uppercase;margin-bottom:14px}
+.results-hero h2{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,32px);font-weight:400;color:var(--text);margin-bottom:8px;line-height:1.3}
+.results-hero h2 em{color:var(--gold);font-style:italic}
+.results-hero p{font-size:13px;color:var(--text3);font-style:italic;font-family:'Playfair Display',serif}
+
+.bg-summary{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:28px}
+.bg-summary h3{font-family:'Playfair Display',serif;font-size:14px;color:var(--text2);margin-bottom:12px;font-weight:400}
+.bg-tags{display:flex;gap:8px;flex-wrap:wrap}
+.bg-tag{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:5px 12px;font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace}
+
+.winner-card{background:linear-gradient(135deg,#141a0e 0%,#181e12 100%);border:2px solid var(--gold);border-radius:14px;padding:28px 32px;margin-bottom:28px;text-align:center}
+.winner-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:10px}
+.winner-party{font-family:'Playfair Display',serif;font-size:clamp(22px,5vw,36px);font-weight:600;margin-bottom:6px}
+.winner-score{font-size:12px;color:var(--text3);margin-bottom:12px}
+.winner-note{font-size:13px;color:var(--text2);line-height:1.8;font-style:italic;font-family:'Playfair Display',serif}
+
+.score-bars{margin-bottom:36px}
+.score-bars h3{font-family:'Playfair Display',serif;font-size:16px;color:var(--text2);margin-bottom:16px;font-weight:400}
+.score-bar-row{margin-bottom:12px}
+.score-bar-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.score-bar-label{font-size:13px;color:var(--text2)}
+.score-bar-pct{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+.score-bar-bg{height:7px;background:var(--border);border-radius:4px}
+.score-bar-fill{height:7px;border-radius:4px;transition:width 1.2s ease;width:0}
+
+.jesus-reveal{margin-bottom:36px}
+.jesus-reveal h3{font-family:'Playfair Display',serif;font-size:17px;color:var(--text2);margin-bottom:6px;font-weight:400}
+.jesus-reveal p{font-size:13px;color:var(--text3);margin-bottom:16px;font-style:italic;font-family:'Playfair Display',serif;line-height:1.7}
+.mini-table{width:100%;border-collapse:collapse;font-size:12px}
+.mini-table th{padding:8px 5px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text4);border-bottom:1px solid var(--border2);text-align:center}
+.mini-table th.left{text-align:left;padding-left:10px}
+.mini-table td{padding:8px 5px;text-align:center;border-bottom:1px solid #101408;vertical-align:middle}
+.mini-table td.left{text-align:left;padding-left:10px;color:var(--text2);font-size:11px}
+.mbadge{width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+.mbadge.yes{background:var(--green)}.mbadge.partial{background:var(--amber)}.mbadge.no{background:var(--red)}
+
+.reflection{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:22px 26px;margin-bottom:28px}
+.reflection h3{font-family:'Playfair Display',serif;font-size:16px;color:var(--text2);margin-bottom:12px;font-weight:400}
+.reflection p{font-size:13px;color:var(--text3);line-height:1.9;margin-bottom:10px}
+.reflection p:last-child{margin-bottom:0}
+.reflection p strong{color:var(--text2)}
+
+.results-links{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:40px}
+
+footer{border-top:1px solid var(--border);padding:20px 24px;text-align:center;font-size:11px;color:var(--text4);font-family:'JetBrains Mono',monospace}
+footer a{color:var(--text3);text-decoration:none}
+footer a:hover{color:var(--text2)}
+
+@media(max-width:580px){
+  .likert-options{gap:3px}
+  .likert-btn{padding:9px 2px;font-size:9px}
+  .likert-btn .val{font-size:11px}
+  .q-card{padding:20px 16px}
+  .welcome-body{padding:18px}
+  .winner-card{padding:20px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- WELCOME -->
+<div class="screen active" id="screen-welcome">
+  <div class="welcome">
+    <p class="welcome-eyebrow">A Values Exercise</p>
+    <h1>Before We Talk Politics:<br><em>What Actually Matters to You?</em></h1>
+    <p class="welcome-sub">No parties. No candidates. No noise. Just you.</p>
+    <div class="welcome-body">
+      <p>We all care about this country. We all want things to be better. But somewhere between what we actually <strong>believe</strong> and how we <strong>vote</strong>, something gets lost — in the noise, in the tribalism, in what we inherited from our families and our feeds.</p>
+      <p>This isn't a political quiz. It's a values exercise. You'll answer questions about what matters to you — <strong>before any political framing enters the picture.</strong> No party names. No politicians. Just statements about how the world works and how it should.</p>
+      <p>At the end, we'll show you which American political party your answers actually align with. You might be surprised. Most people are.</p>
+      <p>We'll also show you how your values compare to the core teachings of Jesus of Nazareth — not as a religious judgment, but because his moral framework is one of the most thoroughly documented ethical systems in Western history, and the gap between what he taught and what gets done in his name is worth examining.</p>
+    </div>
+    <div class="welcome-stats">
+      <div class="stat-pill">35 questions</div>
+      <div class="stat-pill">5 sections</div>
+      <div class="stat-pill">10–15 min</div>
+      <div class="stat-pill">no right answers</div>
+    </div>
+    <button class="btn-primary" onclick="startQuiz()">Begin →</button>
+    <a href="jesus.html" class="btn-secondary">Skip to the analysis</a>
+  </div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-wrap" id="progress-bar" style="display:none">
+  <div class="progress-inner">
+    <div class="progress-top">
+      <span class="progress-section" id="progress-section-label"></span>
+      <span class="progress-count" id="progress-count"></span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="screen" id="screen-quiz">
+  <div class="q-wrap">
+    <div class="q-section-label" id="q-section-label"></div>
+    <div class="q-card">
+      <div class="q-num" id="q-num"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-context" id="q-context"></div>
+      <div id="q-input"></div>
+    </div>
+    <div class="q-nav">
+      <button class="btn-back" id="btn-back" onclick="prevQ()">← Back</button>
+      <button class="btn-next" id="btn-next" onclick="nextQ()">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="screen" id="screen-results">
+  <div class="results-wrap">
+    <div class="results-hero">
+      <p class="results-eyebrow">Your Results</p>
+      <h2 id="results-headline">Your values align most with <em>—</em></h2>
+      <p>Here's how your answers mapped across all six parties — and against the teachings of Jesus.</p>
+    </div>
+    <div class="bg-summary" id="bg-summary"></div>
+    <div class="winner-card" id="winner-card"></div>
+    <div class="score-bars" id="score-bars"></div>
+    <div class="jesus-reveal" id="jesus-reveal"></div>
+    <div class="reflection" id="reflection"></div>
+    <div class="results-links">
+      <button class="btn-primary" onclick="window.location.href='jesus.html'">Read the Full Analysis →</button>
+      <button class="btn-secondary" onclick="retakeQuiz()">Retake the Quiz</button>
+    </div>
+  </div>
+  <footer>
+    <p>Part of <a href="/">jakes40th.com</a> · <a href="jesus.html">Full Jesus / Politics Analysis</a></p>
+  </footer>
+</div>
+
+<script>
+const SECTIONS = [
+  { id:'about',  label:'Section 1 — About You' },
+  { id:'values', label:'Section 2 — Core Values' },
+  { id:'topics', label:'Section 3 — Major Topics' },
+  { id:'system', label:'Section 4 — The Political System' },
+];
+
+const L = [
+  {val:1,label:'Strongly\nDisagree'},
+  {val:2,label:'Disagree'},
+  {val:3,label:'Neutral'},
+  {val:4,label:'Agree'},
+  {val:5,label:'Strongly\nAgree'},
+];
+
+// ── QUESTIONS ──
+// Rewritten for genuine neutrality:
+// - Conservative-leaning statements score right when agreed with
+// - Progressive-leaning statements score left when agreed with
+// - Roughly balanced across the full set
+// - No embedded premises that assume one side is correct
+// - Context notes explain without leading
+
+const questions = [
+
+  // SECTION 1: ABOUT YOU
+  {id:'birth_region',section:'about',type:'mc',
+   text:'Where did you grow up?',
+   context:'Helps contextualize your results — not judge them.',
+   options:['Northeast US','Southeast US','Midwest US','Southwest US','West Coast US','Rural US (any region)','Outside the United States']},
+
+  {id:'education',section:'about',type:'mc',
+   text:'What is your highest level of education?',
+   context:'',
+   options:['High school diploma or GED','Some college, no degree','Trade or vocational school','Associate\'s degree','Bachelor\'s degree','Graduate or professional degree']},
+
+  {id:'employment',section:'about',type:'mc',
+   text:'How would you describe your current work situation?',
+   context:'',
+   options:['Working class / hourly wage','Small business owner','Salaried professional','Self-employed / freelance','Student','Retired','Not currently employed']},
+
+  {id:'religion',section:'about',type:'mc',
+   text:'How would you describe your religious upbringing?',
+   context:'',
+   options:['Devout religious household','Moderately religious household','Nominally religious (holidays only)','Non-religious household','Mixed (parents differed)']},
+
+  {id:'current_faith',section:'about',type:'mc',
+   text:'How would you describe your current relationship with religion or spirituality?',
+   context:'',
+   options:['Actively religious','Spiritual but not religious','Culturally religious (identity, not practice)','Agnostic','Atheist','Still figuring it out']},
+
+  {id:'party_id',section:'about',type:'mc',
+   text:'If someone asked you right now, what political party would you say you belong to?',
+   context:'We\'ll compare this to your actual results at the end.',
+   options:['Democrat','Republican','Independent','Libertarian','Green','Democratic Socialist','No idea','Prefer not to say']},
+
+  // SECTION 2: CORE VALUES
+  // Each mapped to one of the 10 Jesus tenets
+  // Mix of left-leaning and right-leaning framings
+
+  {id:'v_poor',section:'values',tenet:1,type:'likert',
+   text:'When a society is wealthy enough, there is no excuse for people going without food, shelter, or basic medical care.',
+   context:'This is about collective capacity, not about who is responsible for providing it.'},
+
+  {id:'v_wealth',section:'values',tenet:2,type:'likert',
+   text:'Personal wealth earned through hard work and innovation is something to be celebrated, not penalized.',
+   context:'This statement leans toward the conservative view. Agreeing moves your score in that direction.'},
+
+  {id:'v_strong_defense',section:'values',tenet:3,type:'likert',
+   text:'A strong national defense — including a powerful military — is one of the most important things a government can maintain.',
+   context:'This is a conservative-leaning statement. Agreeing reflects a pro-military values position.'},
+
+  {id:'v_inclusion',section:'values',tenet:4,type:'likert',
+   text:'A person\'s worth and place in society should be determined by their character and conduct — not their background, ethnicity, or religion.',
+   context:'This is framed to be agreeable across the spectrum — the key is what it implies about policy.'},
+
+  {id:'v_religious_leadership',section:'values',tenet:5,type:'likert',
+   text:'Leaders who govern according to strong religious or moral principles make better decisions for society.',
+   context:'This is a conservative-leaning framing. The counterargument is that religious authority and political power are a dangerous combination.'},
+
+  {id:'v_justice',section:'values',tenet:6,type:'likert',
+   text:'People who commit serious crimes should face serious consequences. Punishment is a legitimate and necessary part of justice.',
+   context:'This is a conservative-leaning framing. The progressive counterargument emphasizes rehabilitation over retribution.'},
+
+  {id:'v_humility',section:'values',tenet:7,type:'likert',
+   text:'The best leaders are those who genuinely serve the people they lead — not those who project strength, dominance, or certainty.',
+   context:''},
+
+  {id:'v_nationalism',section:'values',tenet:8,type:'likert',
+   text:'A country has the right — and the responsibility — to prioritize the needs of its own citizens over those of people from other nations.',
+   context:'This is a conservative-leaning framing. Agreeing reflects a nationalist or America-first position.'},
+
+  {id:'v_immigrants',section:'values',tenet:9,type:'likert',
+   text:'Controlling who enters the country is a basic and legitimate function of national sovereignty.',
+   context:'This is a conservative-leaning framing. Agreeing reflects a border-control position rather than an open-borders one.'},
+
+  {id:'v_materialism',section:'values',tenet:10,type:'likert',
+   text:'Economic growth — more jobs, more goods, more prosperity — is one of the most reliable ways to improve people\'s lives.',
+   context:'This is a pro-growth, moderate-to-conservative framing. The counterargument questions whether growth alone produces wellbeing.'},
+
+  {id:'v_abortion',section:'values',tenet:'abortion',type:'likert',
+   text:'Reducing the circumstances that lead people to consider abortion — poverty, lack of support, inadequate healthcare — is more effective than legal restrictions.',
+   context:'This question is about approach and root causes. You can hold any moral position on abortion and still have a view on this.'},
+
+  // SECTION 3: MAJOR TOPICS
+  // Alternating left/right framings throughout
+
+  {id:'t_education_local',section:'topics',type:'likert',
+   text:'Parents and local communities should have primary control over how children are educated — not the federal government.',
+   context:'Conservative-leaning. Reflects decentralization and parental rights values.'},
+
+  {id:'t_college',section:'topics',type:'likert',
+   text:'If someone is willing to work hard, they should be able to access higher education or job training without it derailing their finances for decades.',
+   context:'Intentionally neutral framing — focuses on access and effort rather than who pays.'},
+
+  {id:'t_public_goods',section:'topics',type:'likert',
+   text:'Public libraries, parks, and community spaces are worth funding because they benefit everyone — including people who could afford private alternatives.',
+   context:''},
+
+  {id:'t_healthcare',section:'topics',type:'likert',
+   text:'The government getting more involved in healthcare would likely make it worse — more bureaucratic, less innovative, and more expensive.',
+   context:'Conservative-leaning. Reflects free-market healthcare values.'},
+
+  {id:'t_pharma',section:'topics',type:'likert',
+   text:'Drug companies investing billions in research and development deserve to profit from that investment.',
+   context:'Pro-industry framing. The counterargument is that life-saving drugs should not be priced out of reach.'},
+
+  {id:'t_wages',section:'topics',type:'likert',
+   text:'Wages should be set by the market — what employers can offer and workers will accept — not by government mandates.',
+   context:'Conservative/libertarian framing. Reflects free-market labor values.'},
+
+  {id:'t_housing',section:'topics',type:'likert',
+   text:'Housing prices are high because of too much government regulation — zoning laws, permitting delays, and building restrictions — not too little government intervention.',
+   context:'This is actually a position held across the political spectrum, though for different reasons.'},
+
+  {id:'t_policing',section:'topics',type:'likert',
+   text:'The most important thing we can do to improve public safety is fully fund and support local law enforcement.',
+   context:'Conservative-leaning. Reflects a law-and-order values position.'},
+
+  {id:'t_military',section:'topics',type:'likert',
+   text:'American military strength is a stabilizing force in the world — without it, things would be significantly more dangerous.',
+   context:'Conservative-leaning. Reflects a pro-defense foreign policy position.'},
+
+  {id:'t_environment',section:'topics',type:'likert',
+   text:'Environmental regulations often do more economic harm than environmental good — and the tradeoffs are rarely honest.',
+   context:'Conservative/libertarian framing. The counterargument is that environmental costs are routinely externalized onto the public.'},
+
+  // SECTION 4: THE POLITICAL SYSTEM
+
+  {id:'s_twoparty',section:'system',type:'likert',
+   text:'The two-party system doesn\'t represent the full range of what Americans actually believe. Real choice requires more options.',
+   context:'This position is actually held across the political spectrum — libertarians, greens, and many independents agree.'},
+
+  {id:'s_termlimits',section:'system',type:'likert',
+   text:'Career politicians who serve for decades become disconnected from the people they represent. Term limits are a reasonable solution.',
+   context:''},
+
+  {id:'s_campaign_finance',section:'system',type:'likert',
+   text:'Spending money to support political candidates is a form of free speech that should not be restricted by the government.',
+   context:'Conservative/libertarian framing. Reflects the Citizens United majority opinion logic.'},
+
+  {id:'s_electoralcollege',section:'system',type:'likert',
+   text:'The Electoral College protects smaller states from being ignored in presidential elections and should be preserved.',
+   context:'Conservative-leaning. Reflects the traditional defense of the Electoral College.'},
+
+  {id:'s_voting',section:'system',type:'likert',
+   text:'Ensuring that only eligible citizens vote is more important than making voting as easy as possible.',
+   context:'Conservative-leaning. Reflects voter integrity values over voter access values.'},
+
+  {id:'s_taxes',section:'system',type:'likert',
+   text:'The government already takes too much of what people earn. Lower taxes — across the board — would lead to better outcomes.',
+   context:'Conservative/libertarian framing. Reflects anti-tax, pro-growth values.'},
+
+  {id:'s_local_gov',section:'system',type:'likert',
+   text:'Local and state governments generally understand their communities better than Washington does, and should have more power — not less.',
+   context:'Conservative-leaning. Reflects federalism and states\' rights values.'},
+
+  {id:'s_federal_gov',section:'system',type:'likert',
+   text:'Some problems — like climate, poverty, and healthcare — are too large and interconnected for local governments to solve. They require federal action.',
+   context:'Progressive-leaning. Reflects a belief in federal government as a necessary problem-solver.'},
+
+  {id:'s_financial',section:'system',type:'likert',
+   text:'Free markets, including financial markets, produce better outcomes than government intervention — even when they\'re imperfect.',
+   context:'Conservative/libertarian framing.'},
+
+  {id:'s_energy',section:'system',type:'likert',
+   text:'Energy policy should prioritize affordability and reliability for working families over environmental goals.',
+   context:'Conservative-leaning. Reflects an energy-independence and cost-of-living values position.'},
+];
+
+// ── PARTY WEIGHTS ──
+// Positive weight = agreeing moves score toward that party
+// Negative weight = agreeing moves score away from that party
+// Scale: -2 to +2
+
+const partyWeights = {
+  // VALUES
+  v_poor:              {dem:2,  rep:0,  dsa:2,  grn:2,  lib:-1, con:0 },
+  v_wealth:            {dem:-1, rep:2,  dsa:-2, grn:-2, lib:2,  con:2 },
+  v_strong_defense:    {dem:-1, rep:2,  dsa:-2, grn:-2, lib:0,  con:2 },
+  v_inclusion:         {dem:1,  rep:0,  dsa:2,  grn:2,  lib:1,  con:-1},
+  v_religious_leadership:{dem:-1,rep:1, dsa:-2, grn:-1, lib:-1, con:2 },
+  v_justice:           {dem:-1, rep:2,  dsa:-2, grn:-1, lib:0,  con:2 },
+  v_humility:          {dem:1,  rep:-1, dsa:1,  grn:1,  lib:1,  con:-1},
+  v_nationalism:       {dem:-1, rep:2,  dsa:-2, grn:-2, lib:0,  con:2 },
+  v_immigrants:        {dem:-2, rep:2,  dsa:-2, grn:-2, lib:-1, con:2 },
+  v_materialism:       {dem:0,  rep:2,  dsa:-2, grn:-2, lib:2,  con:1 },
+  v_abortion:          {dem:2,  rep:-1, dsa:2,  grn:2,  lib:1,  con:-2},
+  // TOPICS
+  t_education_local:   {dem:-1, rep:2,  dsa:-1, grn:-1, lib:2,  con:2 },
+  t_college:           {dem:2,  rep:0,  dsa:2,  grn:2,  lib:-1, con:0 },
+  t_public_goods:      {dem:2,  rep:0,  dsa:2,  grn:2,  lib:-1, con:0 },
+  t_healthcare:        {dem:-2, rep:2,  dsa:-2, grn:-2, lib:2,  con:1 },
+  t_pharma:            {dem:-1, rep:2,  dsa:-2, grn:-2, lib:1,  con:1 },
+  t_wages:             {dem:-2, rep:2,  dsa:-2, grn:-2, lib:2,  con:1 },
+  t_housing:           {dem:0,  rep:1,  dsa:0,  grn:0,  lib:2,  con:1 },
+  t_policing:          {dem:0,  rep:2,  dsa:-2, grn:-1, lib:0,  con:2 },
+  t_military:          {dem:-1, rep:2,  dsa:-2, grn:-2, lib:0,  con:2 },
+  t_environment:       {dem:-2, rep:1,  dsa:-2, grn:-2, lib:2,  con:1 },
+  // SYSTEM
+  s_twoparty:          {dem:-1, rep:-1, dsa:2,  grn:2,  lib:2,  con:1 },
+  s_termlimits:        {dem:0,  rep:1,  dsa:1,  grn:1,  lib:2,  con:2 },
+  s_campaign_finance:  {dem:-2, rep:2,  dsa:-2, grn:-2, lib:2,  con:1 },
+  s_electoralcollege:  {dem:-2, rep:2,  dsa:-2, grn:-2, lib:0,  con:2 },
+  s_voting:            {dem:-2, rep:2,  dsa:-2, grn:-2, lib:0,  con:2 },
+  s_taxes:             {dem:-2, rep:2,  dsa:-2, grn:-2, lib:2,  con:2 },
+  s_local_gov:         {dem:-1, rep:2,  dsa:0,  grn:0,  lib:2,  con:2 },
+  s_federal_gov:       {dem:2,  rep:-1, dsa:2,  grn:2,  lib:-2, con:-1},
+  s_financial:         {dem:-1, rep:2,  dsa:-2, grn:-2, lib:2,  con:1 },
+  s_energy:            {dem:-2, rep:2,  dsa:-2, grn:-2, lib:1,  con:2 },
+};
+
+const PARTIES = [
+  {id:'dem',label:'Democrat',           color:'#1a4fd6'},
+  {id:'rep',label:'Republican',         color:'#c0392b'},
+  {id:'dsa',label:'Democratic Socialist',color:'#8B0000'},
+  {id:'grn',label:'Green Party',        color:'#2d7a3a'},
+  {id:'lib',label:'Libertarian',        color:'#b8860b'},
+  {id:'con',label:'Constitution Party', color:'#5a3e8c'},
+];
+
+const PARTY_NOTES = {
+  dem:'Your answers reflect a belief in active, functional government as a tool for equity — on healthcare, education, and immigration. The Democratic Party\'s platform aligns with this, though its record on economic justice is more cautious than its rhetoric.',
+  rep:'Your answers lean toward free markets, strong defense, local control, and skepticism of federal power. The Republican Party formally represents these positions, though its recent record on fiscal discipline has been inconsistent.',
+  dsa:'Your values — redistribution, anti-militarism, restorative justice, radical inclusion — align most closely with the democratic socialist tradition. Think MLK\'s Poor People\'s Campaign and Eugene Debs, not Soviet authoritarianism.',
+  grn:'Your answers reflect deep commitments to ecological sustainability, economic justice, and structural political reform. The Green Party holds these positions most consistently, even without significant electoral power.',
+  lib:'Your answers reflect a strong belief in individual freedom from government interference — on both economic and personal issues. The Libertarian Party is the most consistent expression of this position in American politics.',
+  con:'Your answers reflect traditional values, constitutional originalism, strong national sovereignty, and a belief that American governance should be grounded in Judeo-Christian principles. The Constitution Party holds these positions most explicitly.',
+};
+
+const JESUS_SCORES = {
+  dem:[1,0.5,0.5,1,0.5,0.5,0.5,0.5,1,0.5],
+  rep:[0.5,0,0,0,0.5,0,0,0,0,0],
+  dsa:[1,1,1,1,1,1,0.5,0.5,1,1],
+  grn:[1,1,1,1,1,1,0.5,0.5,1,1],
+  lib:[0,0,0.5,0.5,0.5,0.5,0.5,0.5,1,0],
+  con:[0.5,0,0,0,0,0,0,0,0,0],
+};
+
+const TENET_LABELS = [
+  'Care for the Poor','Reject Wealth Accumulation','Non-Violence',
+  'Radical Inclusion','Anti-Hypocrisy','Restorative Justice',
+  'Servant Leadership','Anti-Nationalism','Care for Immigrants','Anti-Materialism'
+];
+
+// ── STATE ──
+let currentQ = 0;
+let answers = {};
+
+// ── RENDER ──
+function startQuiz() {
+  document.getElementById('screen-welcome').classList.remove('active');
+  document.getElementById('screen-quiz').classList.add('active');
+  document.getElementById('progress-bar').style.display = 'block';
+  renderQ();
+}
+
+function renderQ() {
+  const q = questions[currentQ];
+  const total = questions.length;
+  document.getElementById('progress-fill').style.width = ((currentQ/total)*100)+'%';
+  document.getElementById('progress-count').textContent = (currentQ+1)+' / '+total;
+  const sec = SECTIONS.find(s=>s.id===q.section);
+  document.getElementById('progress-section-label').textContent = sec?sec.label:'';
+  document.getElementById('q-section-label').textContent = sec?sec.label:'';
+  document.getElementById('q-num').textContent = 'Question '+(currentQ+1)+' of '+total;
+  document.getElementById('q-text').textContent = q.text;
+  const ctx = document.getElementById('q-context');
+  if (q.context) { ctx.textContent = q.context; ctx.classList.add('show'); }
+  else { ctx.textContent=''; ctx.classList.remove('show'); }
+  document.getElementById('btn-back').style.visibility = currentQ===0?'hidden':'visible';
+
+  const inputDiv = document.getElementById('q-input');
+  inputDiv.innerHTML = '';
+
+  if (q.type==='likert') {
+    const saved = answers[q.id];
+    inputDiv.innerHTML = `
+      <div class="likert-labels"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
+      <div class="likert-options">
+        ${L.map(opt=>`
+          <button class="likert-btn ${saved===opt.val?'selected':''}"
+            onclick="selectLikert('${q.id}',${opt.val},this)">
+            <span class="val">${opt.val}</span>${opt.label.replace('\n','<br>')}
+          </button>`).join('')}
+      </div>`;
+  } else {
+    const saved = answers[q.id];
+    inputDiv.innerHTML = `<div class="mc-options">
+      ${q.options.map((opt,i)=>`
+        <button class="mc-btn ${saved===i?'selected':''}"
+          onclick="selectMC('${q.id}',${i},this)">${opt}</button>`).join('')}
+    </div>`;
+  }
+  updateNextBtn();
+  window.scrollTo(0,0);
+}
+
+function selectLikert(qid,val,el) {
+  answers[qid]=val;
+  document.querySelectorAll('.likert-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  updateNextBtn();
+}
+
+function selectMC(qid,idx,el) {
+  answers[qid]=idx;
+  document.querySelectorAll('.mc-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  updateNextBtn();
+}
+
+function updateNextBtn() {
+  const q = questions[currentQ];
+  const answered = answers[q.id] !== undefined;
+  const btn = document.getElementById('btn-next');
+  btn.classList.toggle('enabled', answered);
+  btn.textContent = currentQ===questions.length-1?'See My Results →':'Continue →';
+}
+
+function nextQ() {
+  if (answers[questions[currentQ].id]===undefined) return;
+  if (currentQ < questions.length-1) { currentQ++; renderQ(); }
+  else showResults();
+}
+
+function prevQ() {
+  if (currentQ>0) { currentQ--; renderQ(); }
+}
+
+// ── SCORING ──
+function calcScores() {
+  const raw={dem:0,rep:0,dsa:0,grn:0,lib:0,con:0};
+  const maxPossible={dem:0,rep:0,dsa:0,grn:0,lib:0,con:0};
+  questions.forEach(q=>{
+    if (q.type!=='likert') return;
+    const ans=answers[q.id]; if(ans===undefined) return;
+    const w=partyWeights[q.id]; if(!w) return;
+    const norm=ans-3; // -2 to +2
+    PARTIES.forEach(p=>{
+      raw[p.id]+=norm*w[p.id];
+      maxPossible[p.id]+=2*Math.abs(w[p.id]);
+    });
+  });
+  const pct={};
+  PARTIES.forEach(p=>{
+    pct[p.id]=maxPossible[p.id]>0
+      ?Math.round(((raw[p.id]+maxPossible[p.id])/(2*maxPossible[p.id]))*100)
+      :50;
+  });
+  return pct;
+}
+
+// ── RESULTS ──
+function showResults() {
+  document.getElementById('screen-quiz').classList.remove('active');
+  document.getElementById('progress-bar').style.display='none';
+  document.getElementById('screen-results').classList.add('active');
+
+  const scores=calcScores();
+  const sorted=PARTIES.slice().sort((a,b)=>scores[b.id]-scores[a.id]);
+  const winner=sorted[0];
+
+  document.getElementById('results-headline').innerHTML=
+    `Your values align most with <em>${winner.label}</em>`;
+
+  // background tags
+  const bgQ=questions.filter(q=>q.type==='mc');
+  const bgTags=bgQ.map(q=>{
+    const v=answers[q.id]; if(v===undefined) return '';
+    return `<div class="bg-tag">${q.options[v]}</div>`;
+  }).join('');
+  document.getElementById('bg-summary').innerHTML=`<h3>Your Background</h3><div class="bg-tags">${bgTags}</div>`;
+
+  // winner card
+  const selfQ=questions.find(q=>q.id==='party_id');
+  const selfIdx=answers['party_id'];
+  const selfLabel=selfQ&&selfIdx!==undefined?selfQ.options[selfIdx]:null;
+  const noMatch=selfLabel&&!selfLabel.toLowerCase().includes(winner.label.toLowerCase().split(' ')[0])
+    &&selfLabel!=='No idea'&&selfLabel!=='Prefer not to say'&&selfLabel!=='Independent';
+  document.getElementById('winner-card').innerHTML=`
+    <div class="winner-label">Your Strongest Alignment</div>
+    <div class="winner-party" style="color:${winner.color}">${winner.label}</div>
+    <div class="winner-score">${scores[winner.id]}% alignment based on your answers</div>
+    ${selfLabel?`<div class="winner-note">${noMatch
+      ?`You said you identify as <strong>${selfLabel}</strong> — but your answers tell a different story. That gap is exactly what this exercise is about.`
+      :`You said you identify as <strong>${selfLabel}</strong>, and your answers are broadly consistent with that. But read on — the margins and the Jesus comparison may still surprise you.`
+    }</div>`:''}`;
+
+  // score bars
+  let barsHtml='<h3>Your Full Alignment Breakdown</h3>';
+  sorted.forEach(p=>{
+    barsHtml+=`<div class="score-bar-row">
+      <div class="score-bar-top">
+        <span class="score-bar-label">${p.label}</span>
+        <span class="score-bar-pct">${scores[p.id]}%</span>
+      </div>
+      <div class="score-bar-bg">
+        <div class="score-bar-fill" id="bar-${p.id}" style="background:${p.color}"></div>
+      </div></div>`;
+  });
+  document.getElementById('score-bars').innerHTML=barsHtml;
+  setTimeout(()=>{
+    sorted.forEach(p=>{ const el=document.getElementById('bar-'+p.id); if(el) el.style.width=scores[p.id]+'%'; });
+  },120);
+
+  // jesus table
+  const CHECK='✓',PARTIAL='~',CROSS='✗';
+  const jsS={dem:[1,0.5,0.5,1,0.5,0.5,0.5,0.5,1,0.5],rep:[0.5,0,0,0,0.5,0,0,0,0,0],dsa:[1,1,1,1,1,1,0.5,0.5,1,1],grn:[1,1,1,1,1,1,0.5,0.5,1,1],lib:[0,0,0.5,0.5,0.5,0.5,0.5,0.5,1,0],con:[0.5,0,0,0,0,0,0,0,0,0]};
+  const symFor=v=>v===1?CHECK:v===0.5?PARTIAL:CROSS;
+  const clsFor=v=>v===1?'yes':v===0.5?'partial':'no';
+  document.getElementById('jesus-reveal').innerHTML=`
+    <h3>How the Parties Compare to Jesus's Teachings</h3>
+    <p>These scores are fixed — based on each party's actual platform and record against ten core beliefs drawn from the Gospels. Your alignment score above reflects your own values; this table shows how the parties themselves measure up.</p>
+    <table class="mini-table">
+      <thead><tr>
+        <th class="left">Tenet</th>
+        ${PARTIES.map(p=>`<th style="color:${p.color}">${p.label.split(' ')[0]}</th>`).join('')}
+      </tr></thead>
+      <tbody>
+        ${TENET_LABELS.map((label,i)=>`<tr>
+          <td class="left">${label}</td>
+          ${PARTIES.map(p=>`<td><span class="mbadge ${clsFor(jsS[p.id][i])}">${symFor(jsS[p.id][i])}</span></td>`).join('')}
+        </tr>`).join('')}
+        <tr style="border-top:1px solid #3a3018">
+          <td class="left" style="font-weight:600;color:#e8dcc8">Total / 10</td>
+          ${PARTIES.map(p=>`<td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:${p.color}">${jsS[p.id].reduce((a,b)=>a+b,0)}</td>`).join('')}
+        </tr>
+      </tbody>
+    </table>`;
+
+  // reflection
+  const jTotal=JESUS_SCORES[winner.id].reduce((a,b)=>a+b,0);
+  document.getElementById('reflection').innerHTML=`
+    <h3>A Note on Your Results</h3>
+    <p>${PARTY_NOTES[winner.id]}</p>
+    <p>On the Jesus alignment scale, the <strong>${winner.label}</strong> scores <strong>${jTotal} out of 10</strong> — based on the party's actual platform compared to the core teachings of the Gospels. ${jTotal>=7?'That\'s among the highest of any party.':jTotal>=5?'That\'s a moderate alignment.':'That\'s one of the lower scores — which may be worth sitting with, especially if faith plays a role in your identity.'}</p>
+    <p>These results are a starting point, not a verdict. The goal was never to tell you what to think. It was to help you hear yourself a little more clearly — before the noise of politics makes that harder.</p>`;
+
+  window.scrollTo(0,0);
+}
+
+function retakeQuiz() {
+  answers={};currentQ=0;
+  document.getElementById('screen-results').classList.remove('active');
+  document.getElementById('screen-welcome').classList.add('active');
+}
+</script>
+</body>
+</html>

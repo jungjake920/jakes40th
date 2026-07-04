@@ -10,17 +10,17 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0d0b08;
-    --bg2: #141008;
-    --bg3: #1a1508;
-    --border: #2e2510;
-    --border2: #3a3018;
-    --gold: #c9a84c;
-    --gold2: #e8c96a;
-    --text: #e8dcc8;
-    --text2: #a89878;
-    --text3: #6a5a3a;
-    --text4: #4a3e28;
+    --bg: #0c0f0a;
+    --bg2: #111408;
+    --bg3: #161a0e;
+    --border: #252d16;
+    --border2: #303d1e;
+    --gold: #8fad5a;
+    --gold2: #a8c46e;
+    --text: #e2e8d4;
+    --text2: #9aaa7e;
+    --text3: #5a6b42;
+    --text4: #3d4a2a;
     --green: #166534;
     --amber: #92400e;
     --red: #7f1d1d;
@@ -44,7 +44,7 @@
 
   /* ── HEADER ── */
   .hero {
-    background: linear-gradient(180deg, #1a1208 0%, #0d0b08 100%);
+    background: linear-gradient(180deg, #141a0c 0%, #0c0f0a 100%);
     border-bottom: 1px solid var(--border2);
     padding: 56px 24px 44px;
     text-align: center;
@@ -77,7 +77,7 @@
   }
   .hero-note {
     display: inline-block;
-    background: #1e1a0e;
+    background: #181e12;
     border: 1px solid var(--border2);
     border-radius: 8px;
     padding: 12px 20px;
@@ -225,9 +225,9 @@
   tbody tr.belief-row {
     cursor: pointer;
     transition: background 0.15s;
-    border-bottom: 1px solid #161208;
+    border-bottom: 1px solid #101408;
   }
-  tbody tr.belief-row:hover { background: #171309; }
+  tbody tr.belief-row:hover { background: #131710; }
   tbody tr.belief-row.expanded { background: var(--bg2); border-bottom: none; }
   tbody td {
     padding: 13px 8px;
@@ -269,7 +269,7 @@
   }
   td.score-cell {
     text-align: center;
-    border-left: 1px solid #161208;
+    border-left: 1px solid #101408;
   }
   td.score-cell.active-col {
     border-left: 2px solid rgba(255,255,255,0.08);
@@ -328,7 +328,7 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
     letter-spacing: 4px;
-    color: var(--con);
+    color: #5a3e8c;
     text-transform: uppercase;
     margin-bottom: 14px;
     text-align: center;
@@ -342,7 +342,7 @@
     margin-bottom: 8px;
     line-height: 1.3;
   }
-  .con-section h2 em { font-style: italic; color: #a080d0; }
+  .con-section h2 em { font-style: italic; color: #7ab87a; }
   .con-section-intro {
     font-size: 14px;
     color: var(--text3);
@@ -370,7 +370,7 @@
   .con-block h3 .num {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
-    color: var(--con);
+    color: #5a3e8c;
     letter-spacing: 1px;
     display: block;
     margin-bottom: 4px;
@@ -392,8 +392,8 @@
     letter-spacing: 0.5px;
   }
   .con-verdict {
-    background: linear-gradient(135deg, #1a1020 0%, #140d1a 100%);
-    border: 1px solid #3a2050;
+    background: linear-gradient(135deg, #0f1a10 0%, #140d1a 100%);
+    border: 1px solid #1a3020;
     border-radius: 12px;
     padding: 28px 30px;
     margin-top: 28px;
@@ -401,7 +401,7 @@
   .con-verdict h3 {
     font-family: 'Playfair Display', serif;
     font-size: 18px;
-    color: #c0a0e0;
+    color: #8fad5a;
     margin-bottom: 14px;
     font-weight: 400;
     font-style: italic;
@@ -543,7 +543,7 @@
 
 <!-- SCOREBOARD -->
 <div class="scoreboard-wrap">
-  <p class="scoreboard-label">Overall Alignment Score (out of 10) — click a party to highlight</p>
+  <p class="scoreboard-label">Overall Alignment Score (out of 11) — click a party to highlight</p>
   <div class="scoreboard" id="scoreboard"></div>
 </div>
 
@@ -631,6 +631,7 @@
     <p class="verdict-label">Overall Verdict</p>
     <p><strong>Democratic Socialists (DSA) and the Green Party score closest</strong> — not because Jesus was a policy platform writer, but because their structural commitments to redistribution, anti-militarism, restorative justice, and radical inclusion most faithfully mirror what he actually did and taught.</p>
     <p>The tradition of <strong>King, Debs, Sanders, and Mamdani</strong> is probably the nearest modern analog: a moral critique of wealth concentration as structural violence, combined with anti-imperialism, care for the outsider, and justice over punishment. King's "triple evils" framework — racism, militarism, economic exploitation — maps almost perfectly onto Jesus's own targets.</p>
+    <p><strong>On abortion specifically:</strong> Jesus never mentioned it — not once in any Gospel. Row 11 scores each party not on their legal position but on whether they address the conditions Jesus spent his entire ministry fighting: poverty, lack of healthcare, abandonment of the vulnerable, and a society that leaves people without support. Criminalizing abortion while opposing every program that reduces its root causes is not a position Jesus endorsed. He never spoke to the legal question. He spoke constantly to the human suffering underneath it.</p>
     <p>But the most honest answer remains: <em>Jesus would belong to no party and would be a radical dissident to all of them</em> — claimed by everyone, comfortable with no one, and most dangerous to whichever institution was currently wielding religious language to protect its own power.</p>
   </div>
 </div>
@@ -650,6 +651,7 @@
     <div class="source-item"><strong>Anti-Nationalism:</strong> John 18:36, Luke 17:20–21 ("the kingdom of God is within/among you"), John 6:15 (Jesus flees when crowd tries to make him king by force), Matthew 22:21 ("render unto Caesar")</div>
     <div class="source-item"><strong>Care for Immigrants:</strong> Matthew 25:35 ("I was a stranger and you welcomed me"), Luke 10:25–37 (the neighbor has no ethnic boundary), Matthew 8:5–13 (Roman centurion healed and praised)</div>
     <div class="source-item"><strong>Anti-Materialism:</strong> Matthew 6:19–34 ("consider the lilies"), Luke 12:15–21 (Parable of the Rich Fool), Matthew 19:21 ("sell everything and follow me"), Luke 9:58 ("the Son of Man has nowhere to lay his head")</div>
+    <div class="source-item"><strong>Abortion (Row 11 — root causes, not legal position):</strong> Jesus never mentioned abortion in any Gospel. Scores reflect his documented teachings on poverty (Luke 4:18, Matt 25:31–46), healthcare access (Matthew 8–9, Luke 17), care for the vulnerable (Luke 18:15–17), and the social conditions he consistently targeted. The argument that addressing poverty and lack of support reduces abortion rates is supported by: Guttmacher Institute research on socioeconomic drivers of abortion; CDC data on abortion rates correlated with poverty and healthcare access; and the consistent finding across public health literature that contraception access and poverty reduction are the most effective abortion-reduction strategies.</div>
     <h4 style="margin-top:18px">Secondary Sources — Constitution Party Analysis</h4>
     <div class="source-item"><strong>Constitution Party platform (2024–2028):</strong> constitutionparty.com/platform — official party platform document</div>
     <div class="source-item"><strong>R.J. Rushdoony:</strong> Wikipedia — "R. J. Rushdoony"; McVicar, Michael J. — <em>Christian Reconstruction: R.J. Rushdoony and American Religious Conservatism</em> (UNC Press)</div>
@@ -818,6 +820,20 @@ const beliefs = [
       grn: 'Degrowth, ecological limits, steady-state economics, anti-consumerism — most closely aligned of any party.',
       lib: 'Material freedom and consumption as fundamental rights — structural contradiction.',
       con: 'Prosperity gospel explicitly frames wealth as God\'s blessing — direct contradiction.',
+    }
+  },
+  {
+    num: '11†', belief: 'Abortion — What Jesus Never Said, and What He Did',
+    citation: '† Jesus never mentioned abortion. Scores reflect his documented views on its root causes.',
+    summary: 'Jesus said nothing about abortion. But he spoke extensively about every condition that makes abortion feel necessary — poverty, abandonment, lack of care, and the crushing weight of a society that fails its most vulnerable. This row scores each party on those root causes, not on the legal question Jesus never addressed.',
+    scores: { dem: CHECK, rep: CROSS, dsa: CHECK, grn: CHECK, lib: PARTIAL, con: CROSS },
+    notes: {
+      dem: 'Supports comprehensive sex education, contraception access, poverty reduction, paid family leave, and healthcare — all conditions Jesus cared about deeply. Addresses root causes structurally.',
+      rep: 'Focuses almost entirely on criminalization while opposing the social programs — healthcare, poverty relief, childcare, sex ed — that reduce the conditions leading to abortion. Contradicts Jesus\'s root-cause logic.',
+      dsa: 'Strongest platform on eliminating root causes: universal healthcare, childcare, housing, living wages, education. Addresses every condition Jesus spoke to directly.',
+      grn: 'Comprehensive support for poverty reduction, healthcare access, sex education, and childcare. Addresses root causes consistently.',
+      lib: 'Supports personal bodily autonomy and some access to contraception, but opposes the social safety net that addresses root causes. Partial alignment at best.',
+      con: 'Focuses exclusively on criminalization and opposes virtually every government program that addresses the poverty, healthcare gaps, and lack of support that Jesus spoke to directly. Treats the symptom, ignores the disease.',
     }
   }
 ];
